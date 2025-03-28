@@ -1,1 +1,1 @@
-# EchoJot
+# My-Notes
