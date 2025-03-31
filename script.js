@@ -74,6 +74,10 @@ let categories = JSON.parse(localStorage.getItem('categories')) || ['general', '
 let autoSaveTimer = null;
 let autoSaveDelay = 200; //0.5 seconds
 let currentNewNoteId = null; // Add this to track new note being created
+let isSelectMode = false;
+let selectedNotes = [];
+let notesData = []; // Assuming you have an array to store notes
+let currentNoteId = null;
     
     // Initialize the app
     initApp();
@@ -452,7 +456,16 @@ function triggerAutoSave() {
             newNoteTitle.focus();
             window.scrollTo(0, 0);
         }, 100);
+         // Add this for mobile devices
+    if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+        setTimeout(() => {
+            window.scrollTo(0, 0);
+            document.body.style.height = '100%';
+            document.body.style.overflow = 'hidden';
+        }, 300);
     }
+    }
+    
     
     function closeNewNoteEditor(e) {
         if (e) e.preventDefault();
@@ -461,6 +474,11 @@ function triggerAutoSave() {
         currentImageDataUrl = null;
         imageInput.value = '';
         currentNewNoteId = null; // Reset when closing
+         // Reset for mobile devices
+    if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+        document.body.style.height = '';
+        document.body.style.overflow = '';
+    }
     }
     
     function openViewNote(noteId) {
@@ -609,11 +627,15 @@ function triggerAutoSave() {
             });
             document.body.appendChild(newOverlay);
         }
+        // Add this line to prevent background scrolling
+    document.body.classList.add('modal-open');
     }
     
     function removeOverlay() {
         const overlay = document.querySelector('.overlay');
         if (overlay) overlay.remove();
+        // Add this line to re-enable scrolling
+    document.body.classList.remove('modal-open');
     }
     
     function handleImageUpload(e) {
@@ -1103,4 +1125,5 @@ function setupAutoSave(editorId, indicatorId, saveBtnId) {
 // Setup auto-save for both editors
 setupAutoSave('newNoteContent', 'autoSaveIndicator', 'saveNoteBtn');
 setupAutoSave('editNoteContent', 'editAutoSaveIndicator', 'saveEditNoteBtn');
+
 

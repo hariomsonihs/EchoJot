@@ -371,6 +371,14 @@ body {
     overflow-y: auto;
 }
 
+/* Class to prevent background scrolling */
+body.no-scroll {
+    overflow: hidden;
+    height: 100vh;
+    width: 100%;
+    position: fixed;
+}
+
 .note-editor-container.active {
     display: flex;
 }
@@ -417,7 +425,8 @@ body {
 }
 
 .note-content-editor {
-    min-height: 200px;
+    min-height: 50vh;
+    max-height: 70vh;
     padding: 15px;
     border-radius: var(--radius);
     border: 1px solid var(--border-color);
@@ -1245,3 +1254,64 @@ body[data-theme="dark"] .auto-save-indicator {
     color: #bbbbbb;
 }
 
+/* Add this to your CSS */
+body.modal-open {
+  overflow: hidden;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+}
+
+.overlay.active {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 100;
+}
+
+.note-editor-container, .view-note-container {
+  max-height: 90vh;
+  overflow-y: auto;
+}
+/* Editor and View Containers */
+.new-note-container, 
+.edit-note-container, 
+.view-note-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1000;
+  background: var(--background-color);
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  transform: translateZ(0); /* Fix for iOS scrolling */
+}
+
+.note-editor-content, 
+.view-note-content {
+  padding-bottom: 100px; /* Space for keyboard */
+}
+
+/* For mobile devices */
+@media (max-width: 768px) {
+  .new-note-container, 
+  .edit-note-container, 
+  .view-note-container {
+    padding-top: env(safe-area-inset-top);
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+}
+.note-editor-container {
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch; /* For smooth scrolling on iOS */
+  }
+  
+  .view-note-container {
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+  }
